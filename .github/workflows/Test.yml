@@ -1,0 +1,27 @@
+name: Hmpf
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+    push:
+    pull_request:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+    # This workflow contains a single job called "test"
+    test:
+        runs-on: ${{ matrix.os }}
+        continue-on-error: true
+        strategy:
+            matrix:
+                julia-version: ["v1.5.0-rc1"]
+                os: [ubuntu-latest, windows-latest, macOS-latest]
+
+        steps:
+            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+            - uses: actions/checkout@v2
+
+            - uses: julia-actions/setup-julia@v1
+              with:
+                  version: ${{ matrix.julia-version }}
+            - uses: julia-actions/julia-runtest@v0.1
